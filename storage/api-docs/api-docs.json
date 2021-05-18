@@ -1,0 +1,45 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Tangent Solutions - PHP Assessment",
+        "description": "The auto-generated swagger documentation for the Tangent Solutions PHP Assessment.",
+        "contact": {
+            "name": "Chris Kempen",
+            "email": "chris@phpalchemist.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/users": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Retrieve a list of users",
+                "description": "Retrieves a list of all of the users created on the system",
+                "operationId": "users-index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, wrong email address or password. Please try again"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

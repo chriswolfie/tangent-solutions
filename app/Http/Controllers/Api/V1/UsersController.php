@@ -1,11 +1,41 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Models\Users;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+/**
+ * @OA\Info(
+ *    title="Tangent Solutions - PHP Assessment",
+ *    description="The auto-generated swagger documentation for the Tangent Solutions PHP Assessment.",
+ *    version="1.0.0",
+ *    @OA\Contact(
+ *       name="Chris Kempen",
+ *       email="chris@phpalchemist.com"
+ *    )
+ * )
+ */
+
+class UsersController extends Controller
 {
+    /**
+     * @OA\Get(
+     * path="/api/v1/users",
+     * summary="Retrieve a list of users",
+     * description="Retrieves a list of all of the users created on the system",
+     * operationId="users-index",
+     * tags={"users"},
+     * @OA\Response(
+     *    response=200,
+     *    description="Success",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Sorry, wrong email address or password. Please try again")
+     *        )
+     *     )
+     * )
+     */
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +43,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = Users::all();
+        return $users;
     }
 
     /**

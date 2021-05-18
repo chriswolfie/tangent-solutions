@@ -21,7 +21,11 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::prefix('v1')->name('api.v1.')->group(function() {
+
     Route::apiResources([
-        'users' => UsersController::class
+        'users' => UsersController::class,
     ]);
+
+    // comment "helper" routes...
+    Route::match(['get'], '/users/{user}/comments', [UsersController::class, 'commentsAction'])->name('users.comments');
 });

@@ -25,9 +25,107 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
+                                        "current_page": {
+                                            "type": "integer",
+                                            "example": "2"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "full_name": {
+                                                        "type": "string",
+                                                        "example": "Firstname Lastname"
+                                                    },
+                                                    "email_address": {
+                                                        "type": "string",
+                                                        "example": "email@domain.com"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": [
+                                                {
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
+                                                },
+                                                {
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
+                                                }
+                                            ]
+                                        },
+                                        "first_page_url": {
                                             "type": "string",
-                                            "example": "Sorry, wrong email address or password. Please try again"
+                                            "example": "http://domain.com/api/v1/users?page=1"
+                                        },
+                                        "from": {
+                                            "type": "integer",
+                                            "example": "2"
+                                        },
+                                        "last_page": {
+                                            "type": "integer",
+                                            "example": "5"
+                                        },
+                                        "last_page_url": {
+                                            "type": "string",
+                                            "example": "http://domain.com/api/v1/users?page=9"
+                                        },
+                                        "links": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "url": {
+                                                        "type": "string",
+                                                        "example": "http://domain.com/api/v1/users?page=1"
+                                                    },
+                                                    "label": {
+                                                        "type": "string",
+                                                        "example": "Previous"
+                                                    },
+                                                    "active": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": [
+                                                {
+                                                    "url": null,
+                                                    "label": "Previous",
+                                                    "active": false
+                                                },
+                                                {
+                                                    "url": "http://domain.com/api/v1/users?page=1",
+                                                    "label": "1",
+                                                    "active": true
+                                                }
+                                            ]
+                                        },
+                                        "next_page_url": {
+                                            "type": "string",
+                                            "example": "http://domain.com/api/v1/users?page=4"
+                                        },
+                                        "path": {
+                                            "type": "string",
+                                            "example": "http://domain.com/api/v1/users"
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": "7"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string",
+                                            "example": "http://domain.com/api/v1/users?page=1"
+                                        },
+                                        "to": {
+                                            "type": "integer",
+                                            "example": "5"
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": "15"
                                         }
                                     },
                                     "type": "object"

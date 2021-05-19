@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserPostRequest;
 use App\Http\Resources\User as UserResource;
-use App\Models\Users;
 use App\Repositories\Contracts\Users as UsersContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

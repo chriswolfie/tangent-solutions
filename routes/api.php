@@ -2,7 +2,9 @@
 
 // use Illuminate\Http\Request;
 
+use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Middleware\PostExists;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,9 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function() {
 
-    Route::apiResources([
-        'user' => UserController::class,
-        'post.comment' => UserController::class,
-    ]);
+    Route::apiResource('user', UserController::class);
+    Route::apiResource('post.comment', CommentController::class)->middleware(PostExists::class);
 
 });

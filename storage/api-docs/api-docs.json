@@ -10,6 +10,74 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/post/{post_id}/comment": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Retrieve a list of comments",
+                "description": "Retrieves a list of all comments for a particular post",
+                "operationId": "comment-index",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "description": "The ID of the post you'd like to retrieve comments for",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": "7"
+                                                    },
+                                                    "full_name": {
+                                                        "type": "string",
+                                                        "example": "Firstname Lastname"
+                                                    },
+                                                    "email_address": {
+                                                        "type": "string",
+                                                        "example": "email@domain.com"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": [
+                                                {
+                                                    "user_id": 1,
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
+                                                },
+                                                {
+                                                    "user_id": 2,
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/user": {
             "get": {
                 "tags": [

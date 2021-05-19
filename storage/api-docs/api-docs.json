@@ -10,14 +10,14 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/v1/users": {
+        "/api/v1/user": {
             "get": {
                 "tags": [
-                    "users"
+                    "user"
                 ],
                 "summary": "Retrieve a list of users",
                 "description": "Retrieves a list of all of the users created on the system",
-                "operationId": "users-index",
+                "operationId": "user-index",
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -25,14 +25,14 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "current_page": {
-                                            "type": "integer",
-                                            "example": "2"
-                                        },
                                         "data": {
                                             "type": "array",
                                             "items": {
                                                 "properties": {
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": "7"
+                                                    },
                                                     "full_name": {
                                                         "type": "string",
                                                         "example": "Firstname Lastname"
@@ -46,86 +46,190 @@
                                             },
                                             "example": [
                                                 {
+                                                    "user_id": 1,
                                                     "full_name": "Firstname Lastname",
                                                     "email_address": "email@domain.com"
                                                 },
                                                 {
+                                                    "user_id": 2,
                                                     "full_name": "Firstname Lastname",
                                                     "email_address": "email@domain.com"
                                                 }
                                             ]
-                                        },
-                                        "first_page_url": {
-                                            "type": "string",
-                                            "example": "http://domain.com/api/v1/users?page=1"
-                                        },
-                                        "from": {
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Add a new user",
+                "description": "Add a new user to the system",
+                "operationId": "user-store",
+                "requestBody": {
+                    "description": "New user particulars",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "full_name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "Firstname Lastname"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@email.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
                                             "type": "integer",
-                                            "example": "2"
+                                            "example": "12"
                                         },
-                                        "last_page": {
-                                            "type": "integer",
-                                            "example": "5"
-                                        },
-                                        "last_page_url": {
+                                        "full_name": {
                                             "type": "string",
-                                            "example": "http://domain.com/api/v1/users?page=9"
+                                            "example": "Firstname Lastname"
                                         },
-                                        "links": {
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
                                             "type": "array",
                                             "items": {
                                                 "properties": {
-                                                    "url": {
-                                                        "type": "string",
-                                                        "example": "http://domain.com/api/v1/users?page=1"
+                                                    "full_name": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "Invalid full name."
+                                                        ]
                                                     },
-                                                    "label": {
-                                                        "type": "string",
-                                                        "example": "Previous"
+                                                    "email": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "The email has already been taken."
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "full_name": [
+                                                    "Invalid full name."
+                                                ],
+                                                "email": [
+                                                    "The email has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{user_id}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Retrieve a list of users",
+                "description": "Retrieves a list of all of the users created on the system",
+                "operationId": "user-show",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "The ID of the user you want to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": "7"
                                                     },
-                                                    "active": {
-                                                        "type": "boolean",
-                                                        "example": "true"
+                                                    "full_name": {
+                                                        "type": "string",
+                                                        "example": "Firstname Lastname"
+                                                    },
+                                                    "email_address": {
+                                                        "type": "string",
+                                                        "example": "email@domain.com"
                                                     }
                                                 },
                                                 "type": "object"
                                             },
                                             "example": [
                                                 {
-                                                    "url": null,
-                                                    "label": "Previous",
-                                                    "active": false
+                                                    "user_id": 1,
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
                                                 },
                                                 {
-                                                    "url": "http://domain.com/api/v1/users?page=1",
-                                                    "label": "1",
-                                                    "active": true
+                                                    "user_id": 2,
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
                                                 }
                                             ]
-                                        },
-                                        "next_page_url": {
-                                            "type": "string",
-                                            "example": "http://domain.com/api/v1/users?page=4"
-                                        },
-                                        "path": {
-                                            "type": "string",
-                                            "example": "http://domain.com/api/v1/users"
-                                        },
-                                        "per_page": {
-                                            "type": "integer",
-                                            "example": "7"
-                                        },
-                                        "prev_page_url": {
-                                            "type": "string",
-                                            "example": "http://domain.com/api/v1/users?page=1"
-                                        },
-                                        "to": {
-                                            "type": "integer",
-                                            "example": "5"
-                                        },
-                                        "total": {
-                                            "type": "integer",
-                                            "example": "15"
                                         }
                                     },
                                     "type": "object"

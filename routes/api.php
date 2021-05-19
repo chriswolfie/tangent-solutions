@@ -2,7 +2,7 @@
 
 // use Illuminate\Http\Request;
 
-use App\Http\Controllers\Api\V1\UsersController;
+use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,9 +23,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->name('api.v1.')->group(function() {
 
     Route::apiResources([
-        'users' => UsersController::class,
+        'user' => UserController::class,
+        'post.comment' => UserController::class,
     ]);
 
-    // comment "helper" routes...
-    Route::match(['get'], '/users/{user}/comments', [UsersController::class, 'commentsAction'])->name('users.comments');
 });

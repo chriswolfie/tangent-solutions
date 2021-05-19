@@ -12,4 +12,9 @@ class Base
     {
         $this->model = $model;
     }
+
+    public function create(array $attributes) : Model
+    {
+        return $this->model->create($attributes);
+    }
 }

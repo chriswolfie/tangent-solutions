@@ -30,7 +30,7 @@ class UserController extends Controller
      *      summary="Retrieve a list of users",
      *      description="Retrieves a list of all of the users created on the system",
      *      operationId="user-index",
-     *      tags={"user"},
+     *      tags={"User"},
      *      @OA\Response(
      *          response=200,
      *          description="Success",
@@ -68,7 +68,7 @@ class UserController extends Controller
      *      summary="Add a new user",
      *      description="Add a new user to the system",
      *      operationId="user-store",
-     *      tags={"user"},
+     *      tags={"User"},
      *      @OA\RequestBody(
      *          required=true,
      *          description="New user particulars",
@@ -127,7 +127,7 @@ class UserController extends Controller
      *      summary="Retrieve a list of users",
      *      description="Retrieves a list of all of the users created on the system",
      *      operationId="user-show",
-     *      tags={"user"},
+     *      tags={"User"},
      *      @OA\Parameter(
      *          name="user_id", in="path", required=true, description="The ID of the user you want to retrieve", @OA\Schema(type="integer", default="1")
      *      ),
@@ -170,7 +170,7 @@ class UserController extends Controller
      *      summary="Update a user",
      *      description="Update a user on the system, supplying any one of the parameters",
      *      operationId="user-update",
-     *      tags={"user"},
+     *      tags={"User"},
      *      @OA\Parameter(
      *          name="user_id", in="path", required=true, description="The ID of the user you want to update", @OA\Schema(type="integer", default="1")
      *      ),
@@ -248,7 +248,7 @@ class UserController extends Controller
      *      summary="Delete a user",
      *      description="Delete a user from the system",
      *      operationId="user-delete",
-     *      tags={"user"},
+     *      tags={"User"},
      *      @OA\Parameter(
      *          name="user_id", in="path", required=true, description="The ID of the user you want to delete", @OA\Schema(type="integer", default="1")
      *      ),

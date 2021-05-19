@@ -13,7 +13,7 @@
         "/api/v1/user": {
             "get": {
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "summary": "Retrieve a list of users",
                 "description": "Retrieves a list of all of the users created on the system",
@@ -67,7 +67,7 @@
             },
             "post": {
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "summary": "Add a new user",
                 "description": "Add a new user to the system",
@@ -175,7 +175,7 @@
         "/api/v1/user/{user_id}": {
             "get": {
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "summary": "Retrieve a list of users",
                 "description": "Retrieves a list of all of the users created on the system",
@@ -237,7 +237,7 @@
             },
             "put": {
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "summary": "Update a user",
                 "description": "Update a user on the system, supplying any one of the parameters",
@@ -368,7 +368,7 @@
             },
             "delete": {
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "summary": "Delete a user",
                 "description": "Delete a user from the system",

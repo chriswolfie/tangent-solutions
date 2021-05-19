@@ -7,11 +7,12 @@ use App\Repositories\Contracts\Users as UsersContract;
 use Illuminate\Support\Collection;
 use stdClass;
 
-class Users extends Base implements UsersContract
+class Users implements UsersContract
 {
+    private $model;
     public function __construct(UsersModel $model)
     {
-        parent::__construct($model);
+        $this->model = $model;
     }
 
     public function allUsers() : Collection
@@ -21,17 +22,49 @@ class Users extends Base implements UsersContract
 
     public function createUser(string $full_name, string $email) : stdClass
     {
-        $user = $this->create([
+        $user = $this->model->create([
             'full_name' => $full_name,
             'email' => $email
         ]);
         return json_decode( json_encode( $user->toArray() ) );
     }
 
-    // public function fetchUser(int $user_id) : stdClass
-    // {
-    //     var_dump($this->model->find(44));
-    //     exit();
-    //     return json_decode( json_encode( $user->toArray() ) );
-    // }
+    /**
+     * @return mixed Either null on failure, or stdClass of the fetched entry.
+     */
+    public function fetchUser(int $user_id) : ?stdClass
+    {
+        $user = $this->model->find($user_id);
+        if (!$user) {
+            return null;
+        }
+        return json_decode( json_encode( $user->toArray() ) );
+    }
+
+    /**
+     * @return mixed Either null on failure, or stdClass of the updated entry.
+     */
+    public function updateUser(int $user_id, string $full_name = '', string $email = '') : ?stdClass
+    {
+        $user = $this->model->find($user_id);
+        if (!$user) {
+            return null;
+        }
+
+        if ($full_name != '' || $email != '') {
+            $user->full_name = ($full_name != '' ? $full_name : $user->full_name);
+            $user->email = ($email != '' ? $email : $user->email);
+            $user->save();
+        }
+
+        return json_decode( json_encode( $user->toArray() ) );
+    }
+
+    public function removeUser(int $user_id) : void
+    {
+        $user = $this->model->find($user_id);
+        if ($user) {
+            $user->delete();
+        }
+    }
 }

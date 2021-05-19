@@ -28,4 +28,12 @@ class UserPostRequest extends FormRequest
             'email' => 'required|email|unique:App\Models\Users,email',
         ];
     }
+
+    public static function updateRules()
+    {
+        return [
+            'full_name' => 'nullable|min:10',
+            'email' => 'nullable|email|unique:App\Models\Users,email',
+        ];
+    }
 }

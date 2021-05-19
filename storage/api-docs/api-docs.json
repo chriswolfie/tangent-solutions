@@ -199,43 +199,195 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "user_id": {
-                                                        "type": "integer",
-                                                        "example": "7"
-                                                    },
-                                                    "full_name": {
-                                                        "type": "string",
-                                                        "example": "Firstname Lastname"
-                                                    },
-                                                    "email_address": {
-                                                        "type": "string",
-                                                        "example": "email@domain.com"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            },
-                                            "example": [
-                                                {
-                                                    "user_id": 1,
-                                                    "full_name": "Firstname Lastname",
-                                                    "email_address": "email@domain.com"
-                                                },
-                                                {
-                                                    "user_id": 2,
-                                                    "full_name": "Firstname Lastname",
-                                                    "email_address": "email@domain.com"
-                                                }
-                                            ]
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
                                         }
                                     },
                                     "type": "object"
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Update a user",
+                "description": "Update a user on the system, supplying any one of the parameters",
+                "operationId": "user-update",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "The ID of the user you want to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated user particulars",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [],
+                                "properties": {
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "Firstname Lastname"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@email.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "full_name": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "Invalid full name."
+                                                        ]
+                                                    },
+                                                    "email": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "The email has already been taken."
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "full_name": [
+                                                    "Invalid full name."
+                                                ],
+                                                "email": [
+                                                    "The email has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Delete a user",
+                "description": "Delete a user from the system",
+                "operationId": "user-delete",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "The ID of the user you want to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
                     }
                 }
             }

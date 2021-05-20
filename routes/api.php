@@ -2,8 +2,9 @@
 
 // use Illuminate\Http\Request;
 
+use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CommentController;
-use App\Http\Controllers\Api\V1\PostsController;
+use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Middleware\PostValidationAndFetch;
 use Illuminate\Support\Facades\Route;
@@ -25,8 +26,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function() {
 
+    Route::apiResource('category', CategoryController::class);
     Route::apiResource('user', UserController::class);
-    Route::apiResource('post', PostsController::class);
-    Route::apiResource('post.comment', CommentController::class)->middleware(PostValidationAndFetch::class);
+    Route::apiResource('post', PostController::class);
+    Route::apiResource('post.comment', PostController::class)->middleware(PostValidationAndFetch::class);
 
 });

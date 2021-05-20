@@ -9,7 +9,7 @@ use App\Repositories\Contracts\Posts as PostsContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class PostsController extends Controller
+class PostController extends Controller
 {
     /**
      *  @OA\Get(

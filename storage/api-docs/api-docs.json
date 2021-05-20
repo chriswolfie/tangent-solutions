@@ -10,26 +10,14 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/v1/post/{post_id}/comment": {
+        "/api/v1/category": {
             "get": {
                 "tags": [
-                    "Comment"
+                    "Category"
                 ],
-                "summary": "Retrieve a list of comments",
-                "description": "Retrieves a list of all comments for a particular post",
-                "operationId": "comment-index",
-                "parameters": [
-                    {
-                        "name": "post_id",
-                        "in": "path",
-                        "description": "The ID of the post you'd like to retrieve comments for",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "default": "1"
-                        }
-                    }
-                ],
+                "summary": "Retrieve a list of categories",
+                "description": "Retrieves a list of all of the categories created on the system",
+                "operationId": "category-index",
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -74,6 +62,323 @@
                                 }
                             }
                         }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Add a new category",
+                "description": "Add a new category to the system",
+                "operationId": "category-store",
+                "requestBody": {
+                    "description": "New category particulars",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "label"
+                                ],
+                                "properties": {
+                                    "label": {
+                                        "type": "label",
+                                        "example": "Category Label"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Post created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "full_name": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "Invalid full name."
+                                                        ]
+                                                    },
+                                                    "email": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "The email has already been taken."
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "full_name": [
+                                                    "Invalid full name."
+                                                ],
+                                                "email": [
+                                                    "The email has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/category/{category_id}": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Retrieves a specific category",
+                "description": "Retrieves a specific category from the available categories on the system",
+                "operationId": "category-show",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "The ID of the category you want to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Update a category",
+                "description": "Update a category on the system, supplying any one of the parameters",
+                "operationId": "category-update",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "The ID of the category you want to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated category particulars",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "label"
+                                ],
+                                "properties": {
+                                    "label": {
+                                        "type": "string",
+                                        "example": "Some New Label"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "full_name": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "Invalid full name."
+                                                        ]
+                                                    },
+                                                    "email": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "The email has already been taken."
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "full_name": [
+                                                    "Invalid full name."
+                                                ],
+                                                "email": [
+                                                    "The email has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Delete a category",
+                "description": "Delete a category from the system",
+                "operationId": "category-delete",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "The ID of the category you want to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
                     }
                 }
             }

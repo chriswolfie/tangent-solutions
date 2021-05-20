@@ -15,10 +15,32 @@ class Users implements UsersContract
         $this->model = $model;
     }
 
-    public function allUsers() : Collection
+    public function fetchAllEntries() : Collection
     {
         return $this->model->all();
     }
+
+    public function fetchSingleEntry(int $id) : ?stdClass
+    {
+        $user = $this->model->find($id);
+        if (!$user) {
+            return null;
+        }
+        return json_decode( json_encode( $user->toArray() ) );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function createUser(string $full_name, string $email) : stdClass
     {
@@ -26,18 +48,6 @@ class Users implements UsersContract
             'full_name' => $full_name,
             'email' => $email
         ]);
-        return json_decode( json_encode( $user->toArray() ) );
-    }
-
-    /**
-     * @return mixed Either null on failure, or stdClass of the fetched entry.
-     */
-    public function fetchUser(int $user_id) : ?stdClass
-    {
-        $user = $this->model->find($user_id);
-        if (!$user) {
-            return null;
-        }
         return json_decode( json_encode( $user->toArray() ) );
     }
 

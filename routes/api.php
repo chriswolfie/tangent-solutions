@@ -29,6 +29,6 @@ Route::prefix('v1')->name('api.v1.')->group(function() {
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('user', UserController::class);
     Route::apiResource('post', PostController::class);
-    Route::apiResource('post.comment', PostController::class)->middleware(PostValidationAndFetch::class);
+    Route::apiResource('post.comment', CommentController::class)->middleware(PostValidationAndFetch::class);
 
 });

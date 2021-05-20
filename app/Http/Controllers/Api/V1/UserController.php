@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserPostRequest;
+use App\Http\Requests\UserPutRequest;
 use App\Http\Resources\User as UserResource;
 use App\Repositories\Contracts\Users as UsersContract;
+use App\Rules\AutonomousUniqueRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -115,7 +117,13 @@ class UserController extends Controller
      */
     public function store(UserPostRequest $request, UsersContract $users_contract)
     {
-        $_ = $request->validated();
+        // values have already been validated, so let's now
+        // run a custom validation check with the uniqueness rule...
+        $rules = $request->rules();
+        $rules['email'][] = new AutonomousUniqueRule($users_contract, 'email');
+        $validator = Validator::make($request->all(), $rules);
+        $validator->validated();
+
         $user = $users_contract->createEntry($request->all());
         if (!$user) {
             return response()->json(['message' => 'User could not be created'], 422);
@@ -229,12 +237,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id, UsersContract $users_contract)
+    public function update(UserPutRequest $request, $id, UsersContract $users_contract)
     {
-        $rules = UserPostRequest::updateRules();
-        $rules['email'] .= ',' . $id . ',id';
+        // values have already been validated, so let's now
+        // run a custom validation check with the uniqueness rule...
+        $rules = $request->rules();
+        $rules['email'][] = new AutonomousUniqueRule($users_contract, 'email', $id);
         $validator = Validator::make($request->all(), $rules);
-        $_ = $validator->validated();
+        $validator->validated();
 
         $user = $users_contract->updateEntry($id, $request->all());
         if (!$user) {

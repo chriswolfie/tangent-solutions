@@ -24,16 +24,8 @@ class UserPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'full_name' => 'required|min:10',
-            'email' => 'required|email|unique:App\Models\Users,email',
-        ];
-    }
-
-    public static function updateRules()
-    {
-        return [
-            'full_name' => 'nullable|min:10',
-            'email' => 'nullable|email|unique:App\Models\Users,email',
+            'full_name' => ['required', 'string', 'min:10'],
+            'email' => ['required', 'email']
         ];
     }
 }

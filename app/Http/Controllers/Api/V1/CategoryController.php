@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryPostRequest;
 use App\Http\Resources\Category as CategoryResource;
 use App\Repositories\Contracts\Categories as CategoriesContract;
+use App\Rules\AutonomousUniqueRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -102,12 +103,18 @@ class CategoryController extends Controller
      */
     public function store(CategoryPostRequest $request, CategoriesContract $categories_contract)
     {
-        $_ = $request->validated();
-        $post = $categories_contract->createEntry($request->all());
-        if (!$post) {
+        // values have already been validated, so let's now
+        // run a custom validation check with the uniqueness rule...
+        $rules = $request->rules();
+        $rules['label'][] = new AutonomousUniqueRule($categories_contract, 'label');
+        $validator = Validator::make($request->all(), $rules);
+        $validator->validated();
+        
+        $category = $categories_contract->createEntry($request->all());
+        if (!$category) {
             return response()->json(['message' => 'Category could not be created'], 422);
         }
-        return response()->json(new CategoryResource($post), 201);
+        return response()->json(new CategoryResource($category), 201);
     }
 
     /**
@@ -215,12 +222,14 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id, CategoriesContract $categories_contract)
+    public function update(CategoryPostRequest $request, $id, CategoriesContract $categories_contract)
     {
-        $rules = CategoryPostRequest::updateRules();
-        $rules['label'] .= ',' . $id . ',id';
+        // values have already been validated, so let's now
+        // run a custom validation check with the uniqueness rule...
+        $rules = $request->rules();
+        $rules['label'][] = new AutonomousUniqueRule($categories_contract, 'label', $id);
         $validator = Validator::make($request->all(), $rules);
-        $_ = $validator->validated();
+        $validator->validated();
 
         $category = $categories_contract->updateEntry($id, $request->all());
         if (!$category) {

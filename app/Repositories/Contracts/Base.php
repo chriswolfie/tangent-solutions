@@ -25,4 +25,8 @@ interface Base
     public function updateEntry(int $entry_id, array $attributes) : ?stdClass;
 
     public function removeEntry(int $entry_id) : void;
+
+    public function valueIsUnique(string $value, string $column, int $ignore_id = 0) : bool;
+
+    public function valueExists(string $value, string $column) : bool;
 }

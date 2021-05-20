@@ -40,7 +40,7 @@ class Base implements BaseContract
         if (!$entry) {
             return null;
         }
-        return json_decode( json_encode( $entry ) );
+        return json_decode( json_encode( $entry->toArray() ) );
     }
 
     public function createEntry(array $attributes) : ?stdClass
@@ -53,7 +53,7 @@ class Base implements BaseContract
         catch (QueryException $e) {
             return null;
         }
-        return json_decode( json_encode( $entry ) );
+        return json_decode( json_encode( $entry->toArray() ) );
     }
 
     public function updateEntry(int $entry_id, array $attributes) : ?stdClass
@@ -74,7 +74,7 @@ class Base implements BaseContract
             return null;
         }
 
-        return json_decode( json_encode( $entry ) );
+        return json_decode( json_encode( $entry->toArray() ) );
     }
 
     public function removeEntry(int $entry_id) : void
@@ -83,5 +83,22 @@ class Base implements BaseContract
         if ($entry) {
             $entry->delete();
         }
+    }
+
+    public function valueIsUnique(string $value, string $column, int $ignore_id = 0) : bool
+    {
+        $row_count = $this->model
+            ->where($column, $value)
+            ->where('id', '!=', $ignore_id)
+            ->count();
+        return $row_count == 0;
+    }
+
+    public function valueExists(string $value, string $column) : bool
+    {
+        $row_count = $this->model
+            ->where($column, $value)
+            ->count();
+        return $row_count > 0;
     }
 }

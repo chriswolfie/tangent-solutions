@@ -24,14 +24,7 @@ class CategoryPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'label' => 'required|string|min:5|unique:categories,label'
-        ];
-    }
-
-    public static function updateRules()
-    {
-        return [
-            'label' => 'required|string|min:5|unique:categories,label'
+            'label' => ['required', 'string', 'min:5']
         ];
     }
 }

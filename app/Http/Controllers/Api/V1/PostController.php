@@ -4,8 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostPostRequest;
+use App\Http\Requests\PostPutRequest;
 use App\Http\Resources\Post as PostResource;
+use App\Repositories\Contracts\Categories as CategoriesContract;
 use App\Repositories\Contracts\Posts as PostsContract;
+use App\Repositories\Contracts\Users as UsersContract;
+use App\Rules\AutonomousExists;
+use App\Rules\AutonomousUniqueRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -103,9 +108,17 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PostPostRequest $request, PostsContract $posts_contract)
+    public function store(PostPostRequest $request, PostsContract $posts_contract, UsersContract $users_contract, CategoriesContract $categories_contract)
     {
-        $_ = $request->validated();
+        // values have already been validated, so let's now
+        // run a custom validation check with the uniqueness rule...
+        $rules = $request->rules();
+        $rules['title'][] = new AutonomousUniqueRule($posts_contract, 'title');
+        $rules['user_id'][] = new AutonomousExists($users_contract, 'id');
+        $rules['category_id'][] = new AutonomousExists($categories_contract, 'id');
+        $validator = Validator::make($request->all(), $rules);
+        $validator->validated();
+
         $post = $posts_contract->createEntry($request->all());
         if (!$post) {
             return response()->json(['message' => 'Post could not be created'], 422);
@@ -221,12 +234,16 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id, PostsContract $posts_contract)
+    public function update(PostPutRequest $request, $id, PostsContract $posts_contract, UsersContract $users_contract, CategoriesContract $categories_contract)
     {
-        $rules = PostPostRequest::updateRules();
-        $rules['title'] .= ',' . $id . ',id';
+        // values have already been validated, so let's now
+        // run a custom validation check with the uniqueness rule...
+        $rules = $request->rules();
+        $rules['title'][] = new AutonomousUniqueRule($posts_contract, 'title', $id);
+        $rules['user_id'][] = new AutonomousExists($users_contract, 'id');
+        $rules['category_id'][] = new AutonomousExists($categories_contract, 'id');
         $validator = Validator::make($request->all(), $rules);
-        $_ = $validator->validated();
+        $validator->validated();
 
         $post = $posts_contract->updateEntry($id, $request->all());
         if (!$post) {

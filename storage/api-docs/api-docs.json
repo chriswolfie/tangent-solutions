@@ -78,6 +78,404 @@
                 }
             }
         },
+        "/api/v1/post": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Retrieve a list of post",
+                "description": "Retrieves a list of all of the posts created on the system",
+                "operationId": "post-index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": "7"
+                                                    },
+                                                    "full_name": {
+                                                        "type": "string",
+                                                        "example": "Firstname Lastname"
+                                                    },
+                                                    "email_address": {
+                                                        "type": "string",
+                                                        "example": "email@domain.com"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": [
+                                                {
+                                                    "user_id": 1,
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
+                                                },
+                                                {
+                                                    "user_id": 2,
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Add a new post",
+                "description": "Add a new post to the system",
+                "operationId": "post-store",
+                "requestBody": {
+                    "description": "New post particulars",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "content",
+                                    "user_id",
+                                    "category_id"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Some Title"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "This is an example of the content."
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": "3"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Post created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "full_name": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "Invalid full name."
+                                                        ]
+                                                    },
+                                                    "email": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "The email has already been taken."
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "full_name": [
+                                                    "Invalid full name."
+                                                ],
+                                                "email": [
+                                                    "The email has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/post/{post_id}": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Retrieves a specific post",
+                "description": "Retrieves a specific post from the available posts on the system",
+                "operationId": "post-show",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "description": "The ID of the post you want to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Update a post",
+                "description": "Update a post on the system, supplying any one of the parameters",
+                "operationId": "post-update",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "description": "The ID of the post you want to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated post particulars",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Some Title"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "This is an example of the content."
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": "3"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "full_name": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "Invalid full name."
+                                                        ]
+                                                    },
+                                                    "email": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "The email has already been taken."
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "full_name": [
+                                                    "Invalid full name."
+                                                ],
+                                                "email": [
+                                                    "The email has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Delete a post",
+                "description": "Delete a post from the system",
+                "operationId": "post-delete",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "description": "The ID of the post you want to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    }
+                }
+            }
+        },
         "/api/v1/user": {
             "get": {
                 "tags": [

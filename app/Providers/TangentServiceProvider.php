@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Http\Resources\User as UserResource;
 use App\Repositories\Contracts\Posts as PostsContract;
 use App\Repositories\Contracts\Users as UsersContract;
 use App\Repositories\Eloquent\Posts as PostsEloquent;
 use App\Repositories\Eloquent\Users as UsersEloquent;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class TangentServiceProvider extends ServiceProvider
@@ -14,7 +14,6 @@ class TangentServiceProvider extends ServiceProvider
     public $bindings = [
         PostsContract::class => PostsEloquent::class,
         UsersContract::class => UsersEloquent::class,
-
     ];
 
     /**
@@ -34,6 +33,6 @@ class TangentServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        UserResource::withoutWrapping();
+        JsonResource::withoutWrapping();
     }
 }

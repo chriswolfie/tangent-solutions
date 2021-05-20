@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Posts as PostsModel;
 use App\Repositories\Contracts\Posts as PostsContract;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use stdClass;
 
@@ -20,9 +21,6 @@ class Posts implements PostsContract
         return $this->model->all();
     }
 
-    /**
-     * @return mixed Either null on failure, or stdClass of the fetched entry.
-     */
     public function fetchSingleEntry(int $id) : ?stdClass
     {
         $post = $this->model->find($id);
@@ -30,5 +28,49 @@ class Posts implements PostsContract
             return null;
         }
         return json_decode( json_encode( $post ) );
+    }
+
+    public function createEntry(array $attributes) : ?stdClass
+    {
+        $post = false;
+        try {
+            $post = $this->model->create($attributes);
+        }
+        catch (QueryException $e) {
+            return null;
+        }
+        return json_decode( json_encode( $post ) );
+    }
+
+    public function updateEntry(int $entry_id, array $attributes) : ?stdClass
+    {
+        $post = $this->model->find($entry_id);
+        if (!$post) {
+            return null;
+        }
+
+        $legal_data_keys = ['title', 'content', 'user_id', 'category_id'];
+        try {
+            foreach ($attributes as $attribute_key => $attribute_value) {
+                if (!in_array($attribute_key, $legal_data_keys)) {
+                    // continue;
+                }
+                $post->{$attribute_key} = $attribute_value;
+            }
+            $post->save();
+        }
+        catch (QueryException $e) {
+            return null;
+        }
+
+        return json_decode( json_encode( $post ) );
+    }
+
+    public function removeEntry(int $entry_id) : void
+    {
+        $post = $this->model->find($entry_id);
+        if ($post) {
+            $post->delete();
+        }
     }
 }

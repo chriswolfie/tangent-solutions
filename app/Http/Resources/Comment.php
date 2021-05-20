@@ -19,7 +19,7 @@ class Comment extends JsonResource
             'content' => $this->content
         ];
 
-        if ($this->users) {
+        if (isset($this->users)) {
             $return_array['user'] = new User($this->users);
         }
 

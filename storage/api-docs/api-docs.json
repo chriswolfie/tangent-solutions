@@ -449,6 +449,368 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Add a new post comment",
+                "description": "Add a new post comment to the system",
+                "operationId": "comment-store",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "description": "The ID of the post you want to retrieve comments for",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "New post particulars",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "content",
+                                    "user_id"
+                                ],
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "example": "This is an example of the content."
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Post created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "full_name": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "Invalid full name."
+                                                        ]
+                                                    },
+                                                    "email": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "The email has already been taken."
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "full_name": [
+                                                    "Invalid full name."
+                                                ],
+                                                "email": [
+                                                    "The email has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/post/{post_id}/comment/{comment_id}": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Retrieves a specific post comment",
+                "description": "Retrieves a specific post comment from the available post comments on the system",
+                "operationId": "comment-show",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "description": "The ID of the post you want to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "comment_id",
+                        "in": "path",
+                        "description": "The ID of the comment you want to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Update a post",
+                "description": "Update a post on the system, supplying any one of the parameters",
+                "operationId": "comment-update",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "description": "The ID of the post you want to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "comment_id",
+                        "in": "path",
+                        "description": "The ID of the comment you want to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated comment particulars",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [],
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "example": "This is an example of the new content."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "12"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Firstname Lastname"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "email@address.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "full_name": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "Invalid full name."
+                                                        ]
+                                                    },
+                                                    "email": {
+                                                        "type": "array",
+                                                        "items": {},
+                                                        "example": [
+                                                            "The email has already been taken."
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": {
+                                                "full_name": [
+                                                    "Invalid full name."
+                                                ],
+                                                "email": [
+                                                    "The email has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Delete a post",
+                "description": "Delete a post from the system",
+                "operationId": "comment-delete",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "description": "The ID of the post you want to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "comment_id",
+                        "in": "path",
+                        "description": "The ID of the comment you want to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    }
+                }
             }
         },
         "/api/v1/post": {

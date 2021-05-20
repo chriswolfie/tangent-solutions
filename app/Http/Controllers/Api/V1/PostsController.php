@@ -110,7 +110,7 @@ class PostsController extends Controller
         if (!$post) {
             return response()->json(['message' => 'Post could not be created'], 422);
         }
-        return new PostResource($post);
+        return response()->json(new PostResource($post), 201);
     }
 
     /**
@@ -229,6 +229,10 @@ class PostsController extends Controller
         $_ = $validator->validated();
 
         $post = $posts_contract->updateEntry($id, $request->all());
+        if (!$post) {
+            return response()->json(['message' => 'Post update failed'], 422);
+        }
+        
         return new PostResource($post);
     }
 

@@ -58,7 +58,7 @@ class UserController extends Controller
      */
     public function index(UsersContract $users_contract)
     {
-        return UserResource::collection($users_contract->allUsers());
+        return UserResource::collection($users_contract->fetchAllEntries());
     }
 
     /**
@@ -116,7 +116,10 @@ class UserController extends Controller
     public function store(UserPostRequest $request, UsersContract $users_contract)
     {
         $_ = $request->validated();
-        $user = $users_contract->createUser($request->input('full_name', ''), $request->input('email', ''));
+        $user = $users_contract->createEntry($request->all());
+        if (!$user) {
+            return response()->json(['message' => 'User could not be created'], 422);
+        }
         return response()->json(new UserResource($user), 201);
     }
 
@@ -156,11 +159,11 @@ class UserController extends Controller
      */
     public function show($id, UsersContract $users_contract)
     {
-        $user = $users_contract->fetchUser($id);
+        $user = $users_contract->fetchSingleEntry($id);
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
-        return response()->json(new UserResource($user), 200);
+        return new UserResource($user);
     }
 
     /**
@@ -233,12 +236,12 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), $rules);
         $_ = $validator->validated();
 
-        $user = $users_contract->updateUser($id, $request->input('full_name', ''), $request->input('email', ''));
+        $user = $users_contract->updateEntry($id, $request->all());
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json(['message' => 'User update failed'], 422);
         }
 
-        return response()->json(new UserResource($user), 200);
+        return new UserResource($user);
     }
 
     /**
@@ -265,7 +268,7 @@ class UserController extends Controller
      */
     public function destroy($id, UsersContract $users_contract)
     {
-        $users_contract->removeUser($id);
+        $users_contract->removeEntry($id);
         return response()->noContent();
     }
 }

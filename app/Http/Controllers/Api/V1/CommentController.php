@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\SuperSimpleAuthenticator;
 use App\Http\Requests\CommentPostRequest;
 use App\Http\Requests\CommentPutRequest;
 use App\Http\Resources\Comment as CommentResource;
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(SuperSimpleAuthenticator::class)->only(['store', 'update', 'destroy']);
+    }
+
     /**
      *  @OA\Get(
      *      path="/api/v1/post/{post_id}/comment",
@@ -63,6 +69,7 @@ class CommentController extends Controller
      *      description="Add a new post comment to the system",
      *      operationId="comment-store",
      *      tags={"Comment"},
+     *      security={ {"api_token": {} } },
      *      @OA\Parameter(
      *          name="post_id", in="path", required=true, description="The ID of the post you want to retrieve comments for", @OA\Schema(type="integer", default="1")
      *      ),

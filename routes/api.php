@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Middleware\PostValidationAndFetch;
+use App\Http\Middleware\SuperSimpleAuthenticator;
 use Illuminate\Support\Facades\Route;
 
 /*

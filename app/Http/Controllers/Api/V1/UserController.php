@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Validator;
  *    @OA\Contact(
  *       name="Chris Kempen",
  *       email="chris@phpalchemist.com"
- *    )
+ *    ),
  * )
+ * 
  */
 
 class UserController extends Controller
@@ -58,7 +59,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(UsersContract $users_contract)
+    public function index(Request $request, UsersContract $users_contract)
     {
         return UserResource::collection($users_contract->fetchAllEntries());
     }

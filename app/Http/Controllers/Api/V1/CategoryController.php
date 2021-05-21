@@ -7,7 +7,6 @@ use App\Http\Requests\CategoryPostRequest;
 use App\Http\Resources\Category as CategoryResource;
 use App\Repositories\Contracts\Categories as CategoriesContract;
 use App\Rules\AutonomousUniqueRule;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller

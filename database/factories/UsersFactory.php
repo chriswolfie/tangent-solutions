@@ -24,6 +24,7 @@ class UsersFactory extends Factory
         return [
             'full_name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
+            'api_key' => sha1($this->faker->firstName()) . sha1($this->faker->lastName())
         ];
     }
 }

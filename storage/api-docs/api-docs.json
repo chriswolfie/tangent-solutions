@@ -565,7 +565,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_token": []
+                    }
+                ]
             }
         },
         "/api/v1/post/{post_id}/comment/{comment_id}": {
@@ -1591,6 +1596,16 @@
                         "description": "No content"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "api_token": {
+                "type": "apiKey",
+                "description": "An API key associated with a user that's been added to the system.",
+                "name": "api_key",
+                "in": "header"
             }
         }
     },

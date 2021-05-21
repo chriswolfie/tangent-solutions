@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('full_name', 255);
             $table->string('email', 255);
+            $table->string('api_key', 80)->nullable();
             $table->timestamps();
         });
     }

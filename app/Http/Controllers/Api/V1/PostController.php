@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(SuperSimpleAuthenticator::class)->only(['store', 'update', 'destroy']);
+    }
+    
     /**
      *  @OA\Get(
      *      path="/api/v1/post",

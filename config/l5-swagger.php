@@ -139,6 +139,12 @@ return [
         */
         'securityDefinitions' => [
             'securitySchemes' => [
+                'api_token' => [ // Unique name of security
+                    'type' => 'apiKey', // The type of the security scheme. Valid values are "basic", "apiKey" or "oauth2".
+                    'description' => 'An API key associated with a user that\'s been added to the system.',
+                    'name' => 'api_key', // The name of the header or query parameter to be used.
+                    'in' => 'header', // The location of the API key. Valid values are "query" or "header".
+                ],
                 /*
                  * Examples of Security schemes
                 */
@@ -184,14 +190,16 @@ return [
                  * Examples of Securities
                 */
                 [
+                    // 'api_key_security' => [],
+
                     /*
                     'oauth2_security_example' => [
                         'read',
                         'write'
                     ],
-
-                    'passport' => []
                     */
+
+                    // 'passport' => []
                 ],
             ],
         ],

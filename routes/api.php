@@ -6,8 +6,8 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Middleware\ApiLogger;
 use App\Http\Middleware\PostValidationAndFetch;
-use App\Http\Middleware\SuperSimpleAuthenticator;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::prefix('v1')->name('api.v1.')->group(function() {
+Route::middleware(ApiLogger::class)->prefix('v1')->name('api.v1.')->group(function() {
 
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('user', UserController::class);

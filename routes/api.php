@@ -32,4 +32,9 @@ Route::middleware(ApiLogger::class)->prefix('v1')->name('api.v1.')->group(functi
     Route::apiResource('post', PostController::class);
     Route::apiResource('post.comment', CommentController::class)->middleware(PostValidationAndFetch::class);
 
+    // a sneaky route to help with frontend testing...
+    Route::get('sneaky', [UserController::class, 'sneakyAction'])->middleware(ApiLogger::class)->name('sneaky');
+
 });
+
+

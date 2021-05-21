@@ -33,4 +33,12 @@ trait PersonalAssistant
             $this->assertEquals(isset($data_item[$field_key]), true, 'The ' . $field_key . ' field is missing');
         }
     }
+
+    public function fetchAnApiKey()
+    {
+        $response = $this->withHeaders([ 'accept' => 'application/json', 'content-type' => 'application/json' ])
+            ->get('/api/v1/sneaky');
+        $data = json_decode( $response->content(), true );
+        return $data[0]['api_key'];
+    }
 }

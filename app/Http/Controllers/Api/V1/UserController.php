@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserPostRequest;
 use App\Http\Requests\UserPutRequest;
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\UserSneaky as UserSneakyResource;
 use App\Repositories\Contracts\Users as UsersContract;
 use App\Rules\AutonomousUniqueRule;
 use Illuminate\Http\Request;
@@ -59,9 +60,42 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, UsersContract $users_contract)
+    public function index(UsersContract $users_contract)
     {
         return UserResource::collection($users_contract->fetchAllEntries());
+    }
+
+    /**
+     *  @OA\Get(
+     *      path="/api/v1/sneaky",
+     *      summary="Retrieve a (sneaky) list of users",
+     *      description="Retrieves a (sneaky) list of all of the users created on the system",
+     *      operationId="user-sneaky",
+     *      tags={"Sneaky"},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Success",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="array",
+     *                  example={
+     *                      { "user_id": 1, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
+     *                      { "user_id": 2, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
+     *                  },
+     *                  @OA\Items(
+     *                      @OA\Property(property="user_id", type="integer", example="7"),
+     *                      @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
+     *                      @OA\Property(property="email_address", type="string", example="email@domain.com"),
+     *                  ),
+     *              ),
+     *          ),
+     *      )
+     *  )
+     */
+    public function sneakyAction(UsersContract $users_contract)
+    {
+        return UserSneakyResource::collection($users_contract->fetchAllEntries());
     }
 
     /**
@@ -125,7 +159,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), $rules);
         $validator->validated();
 
-        $user = $users_contract->createEntry($request->all());
+        $user = $users_contract->createUserEntry($request->all());
         if (!$user) {
             return response()->json(['message' => 'User could not be created'], 422);
         }

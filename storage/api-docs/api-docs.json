@@ -889,7 +889,6 @@
                                 "required": [
                                     "title",
                                     "content",
-                                    "user_id",
                                     "category_id"
                                 ],
                                 "properties": {
@@ -900,10 +899,6 @@
                                     "content": {
                                         "type": "string",
                                         "example": "This is an example of the content."
-                                    },
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": "3"
                                     },
                                     "category_id": {
                                         "type": "integer",
@@ -986,7 +981,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_token": []
+                    }
+                ]
             }
         },
         "/api/v1/post/{post_id}": {
@@ -1188,7 +1188,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_token": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1213,7 +1218,12 @@
                     "204": {
                         "description": "No content"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_token": []
+                    }
+                ]
             }
         },
         "/api/v1/user": {
@@ -1368,6 +1378,62 @@
                                                     "The email has already been taken."
                                                 ]
                                             }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sneaky": {
+            "get": {
+                "tags": [
+                    "Sneaky"
+                ],
+                "summary": "Retrieve a (sneaky) list of users",
+                "description": "Retrieves a (sneaky) list of all of the users created on the system",
+                "operationId": "user-sneaky",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": "7"
+                                                    },
+                                                    "full_name": {
+                                                        "type": "string",
+                                                        "example": "Firstname Lastname"
+                                                    },
+                                                    "email_address": {
+                                                        "type": "string",
+                                                        "example": "email@domain.com"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": [
+                                                {
+                                                    "user_id": 1,
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
+                                                },
+                                                {
+                                                    "user_id": 2,
+                                                    "full_name": "Firstname Lastname",
+                                                    "email_address": "email@domain.com"
+                                                }
+                                            ]
                                         }
                                     },
                                     "type": "object"

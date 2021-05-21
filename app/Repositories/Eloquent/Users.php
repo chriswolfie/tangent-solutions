@@ -15,7 +15,7 @@ class Users extends Base implements UsersContract
 
     // override...
     // we have hashes...
-    public function createEntry(array $attributes) : ?stdClass
+    public function createUserEntry(array $attributes) : ?stdClass
     {
         $attributes['api_key'] = sha1(serialize($attributes)) . sha1(microtime(true));
         return parent::createEntry($attributes);

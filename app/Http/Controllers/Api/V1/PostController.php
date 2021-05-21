@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\SuperSimpleAuthenticator;
 use App\Http\Requests\PostPostRequest;
 use App\Http\Requests\PostPutRequest;
 use App\Http\Resources\Post as PostResource;
@@ -66,14 +67,14 @@ class PostController extends Controller
      *      description="Add a new post to the system",
      *      operationId="post-store",
      *      tags={"Post"},
+     *      security={ {"api_token": {} } },
      *      @OA\RequestBody(
      *          required=true,
      *          description="New post particulars",
      *          @OA\JsonContent(
-     *              required={"title","content","user_id","category_id"},
+     *              required={"title","content","category_id"},
      *              @OA\Property(property="title", type="string", example="Some Title"),
      *              @OA\Property(property="content", type="string", example="This is an example of the content."),
-     *              @OA\Property(property="user_id", type="integer", example="3"),
      *              @OA\Property(property="category_id", type="integer", example="2"),
      *          ),
      *      ),
@@ -181,6 +182,7 @@ class PostController extends Controller
      *      description="Update a post on the system, supplying any one of the parameters",
      *      operationId="post-update",
      *      tags={"Post"},
+     *      security={ {"api_token": {} } },
      *      @OA\Parameter(
      *          name="post_id", in="path", required=true, description="The ID of the post you want to update", @OA\Schema(type="integer", default="1")
      *      ),
@@ -265,6 +267,7 @@ class PostController extends Controller
      *      description="Delete a post from the system",
      *      operationId="post-delete",
      *      tags={"Post"},
+     *      security={ {"api_token": {} } },
      *      @OA\Parameter(
      *          name="post_id", in="path", required=true, description="The ID of the post you want to delete", @OA\Schema(type="integer", default="1")
      *      ),

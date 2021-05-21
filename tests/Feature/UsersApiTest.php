@@ -29,7 +29,7 @@ class UsersApiTest extends TestCase
                 'content-type' => 'application/json'
             ])
             ->get('/api/v1/user');
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
 
         $response->assertStatus(200);
         $this->assertEquals(count($data), 5, 'There should be 5 users in the database');
@@ -43,7 +43,7 @@ class UsersApiTest extends TestCase
                 'content-type' => 'application/json'
             ])
             ->postJson('/api/v1/user', []);
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(422);
         $this->checkResponseResource($data['errors'], ['full_name', 'email']);
 
@@ -55,7 +55,7 @@ class UsersApiTest extends TestCase
             ->postJson('/api/v1/user', [
                 'full_name' => 'Cool Person'
             ]);
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(422);
         $this->checkResponseResource($data['errors'], ['email']);
 
@@ -68,7 +68,7 @@ class UsersApiTest extends TestCase
                 'full_name' => 'Invalid',
                 'email' => 'bademail'
             ]);
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(422);
         $this->checkResponseResource($data['errors'], ['full_name', 'email']);
 
@@ -81,7 +81,7 @@ class UsersApiTest extends TestCase
                 'full_name' => 'Valid Test Person',
                 'email' => 'valid@emailaddress.com'
             ]);
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(201);
         $this->checkResponseResource($data, ['user_id', 'full_name', 'email']);
         $this->assertEquals($data['user_id'], 6, 'The user ID here should be sequential');
@@ -95,7 +95,7 @@ class UsersApiTest extends TestCase
                 'full_name' => 'A Different Person',
                 'email' => 'valid@emailaddress.com'
             ]);
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(422);
         $this->checkResponseResource($data['errors'], ['email']);
     }
@@ -108,7 +108,7 @@ class UsersApiTest extends TestCase
                 'content-type' => 'application/json'
             ])
             ->get('/api/v1/user/5');
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(200);
         $this->checkResponseResource($data, ['user_id', 'full_name', 'email']);
         $this->assertEquals($data['user_id'], 5, 'User ID is not sequential here');
@@ -119,7 +119,7 @@ class UsersApiTest extends TestCase
                 'content-type' => 'application/json'
             ])
             ->get('/api/v1/user/20');
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(404);
         $this->checkResponseResource($data, ['message']);
     }
@@ -132,7 +132,7 @@ class UsersApiTest extends TestCase
                 'content-type' => 'application/json'
             ])
             ->putJson('/api/v1/user/100', []);
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(422);
         $this->checkResponseResource($data, ['message']);
 
@@ -142,7 +142,7 @@ class UsersApiTest extends TestCase
                 'content-type' => 'application/json'
             ])
             ->putJson('/api/v1/user/1', []);
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(200);
         $this->checkResponseResource($data, ['user_id', 'full_name', 'email']);
         $this->assertEquals($data['user_id'], 1, 'User ID is not sequential here');
@@ -163,7 +163,7 @@ class UsersApiTest extends TestCase
                 'content-type' => 'application/json'
             ])
             ->get('/api/v1/user/1');
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(200);
         $this->checkResponseResource($data, ['user_id', 'full_name', 'email']);
         $this->assertEquals($data['user_id'], 1, 'There is something wrong with the user ID');
@@ -179,7 +179,7 @@ class UsersApiTest extends TestCase
         $response = $this
             ->withHeaders([ 'accept' => 'application/json', 'content-type' => 'application/json' ])
             ->get('/api/v1/user');
-        $data = json_decode( json_encode($response->getData()), true );
+        $data = json_decode( $response->content(), true );
         $response->assertStatus(200);
         $this->assertEquals(count($data), 4, 'There should be 4 users in the database');
     }

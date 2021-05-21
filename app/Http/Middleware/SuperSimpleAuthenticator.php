@@ -37,7 +37,7 @@ class SuperSimpleAuthenticator
             return response(['message' => 'Unauthorised'], 401);
         }
 
-        $request->merge(['authenticated_user' => $user_id]);
+        $request->merge(['user_id' => $user_id]);
 
         return $next($request);
     }

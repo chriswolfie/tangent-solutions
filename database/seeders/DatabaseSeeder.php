@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
                 ->for($user)
                 ->for($category)
                 ->create();
-            $comment = Comments::factory()
+            Comments::factory()
                 ->for($user)
                 ->for($post)
                 ->create();

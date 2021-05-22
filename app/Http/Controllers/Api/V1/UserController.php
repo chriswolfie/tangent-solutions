@@ -274,6 +274,12 @@ class UserController extends Controller
      */
     public function update(UserPutRequest $request, $id, UsersContract $users_contract)
     {
+        // user exists..?
+        $user = $users_contract->fetchSingleEntry($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        
         // values have already been validated, so let's now
         // run a custom validation check with the uniqueness rule...
         $rules = $request->rules();

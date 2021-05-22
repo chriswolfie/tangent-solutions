@@ -133,7 +133,7 @@ class UsersApiTest extends TestCase
             ])
             ->putJson('/api/v1/user/100', []);
         $data = json_decode( $response->content(), true );
-        $response->assertStatus(422);
+        $response->assertStatus(404);
         $this->checkResponseResource($data, ['message']);
 
         $response = $this

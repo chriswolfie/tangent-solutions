@@ -243,6 +243,12 @@ class PostController extends Controller
      */
     public function update(PostPutRequest $request, $id, PostsContract $posts_contract, UsersContract $users_contract, CategoriesContract $categories_contract)
     {
+        // check post exists...
+        $post = $posts_contract->fetchSingleEntry($id);
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+
         // values have already been validated, so let's now
         // run a custom validation check with the uniqueness rule...
         $rules = $request->rules();

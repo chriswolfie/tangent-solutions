@@ -780,7 +780,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_token": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -815,7 +820,12 @@
                     "204": {
                         "description": "No content"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_token": []
+                    }
+                ]
             }
         },
         "/api/v1/post": {

@@ -236,6 +236,14 @@ class PostsApiTest extends TestCase
         $response->assertStatus(200);
         $this->assertEquals(count($data), 4, 'There should be 4 posts in the database');
         $this->checkResponseResource($data[0], ['post_id', 'post_title', 'post_content', 'user_id', 'category_id']);
+
+        // check that the comment delete cascaded...
+        $response = $this
+            ->withHeaders([ 'accept' => 'application/json', 'content-type' => 'application/json' ])
+            ->get('/api/v1/post/3/comment/3');
+        $data = json_decode( $response->content(), true );
+        $response->assertStatus(404);
+        $this->checkResponseResource($data, ['message']);
     }
 
 }

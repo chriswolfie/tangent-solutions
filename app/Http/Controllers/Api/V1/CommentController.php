@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\SuperSimpleAuthenticator;
 use App\Http\Requests\CommentPostRequest;
-use App\Http\Requests\CommentPutRequest;
 use App\Http\Resources\Comment as CommentResource;
 use App\Repositories\Contracts\Comments as CommentsContract;
 use App\Repositories\Contracts\Users as UsersContract;
@@ -131,7 +130,7 @@ class CommentController extends Controller
         if (!$comment) {
             return response()->json(['message' => 'Comment could not be created'], 422);
         }
-        return new CommentResource($comment);
+        return response()->json(new CommentResource($comment), 201);
     }
 
     /**
@@ -187,6 +186,7 @@ class CommentController extends Controller
      *      description="Update a post on the system, supplying any one of the parameters",
      *      operationId="comment-update",
      *      tags={"Comment"},
+     *      security={ {"api_token": {} } },
      *      @OA\Parameter(
      *          name="post_id", in="path", required=true, description="The ID of the post you want to update", @OA\Schema(type="integer", default="1")
      *      ),
@@ -245,7 +245,7 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CommentPutRequest $request, $post, $id, CommentsContract $comments_contract)
+    public function update(CommentPostRequest $request, $post, $id, CommentsContract $comments_contract)
     {
         // first, let's check that these are in fact linked...
         $comment = $comments_contract->fetchSingleEntry($id);
@@ -268,6 +268,7 @@ class CommentController extends Controller
      *      description="Delete a post from the system",
      *      operationId="comment-delete",
      *      tags={"Comment"},
+     *      security={ {"api_token": {} } },
      *      @OA\Parameter(
      *          name="post_id", in="path", required=true, description="The ID of the post you want to delete", @OA\Schema(type="integer", default="1")
      *      ),

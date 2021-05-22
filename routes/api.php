@@ -36,5 +36,3 @@ Route::middleware(ApiLogger::class)->prefix('v1')->name('api.v1.')->group(functi
     Route::get('sneaky', [UserController::class, 'sneakyAction'])->middleware(ApiLogger::class)->name('sneaky');
 
 });
-
-

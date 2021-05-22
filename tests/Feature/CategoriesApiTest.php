@@ -159,6 +159,14 @@ class CategoriesApiTest extends TestCase
         $response->assertStatus(422);
         $this->checkResponseResource($data, ['message', 'errors']);
         $this->checkResponseResource($data['errors'], ['label']);
+
+        // check non-existent category...
+        $response = $this
+            ->withHeaders([ 'accept' => 'application/json', 'content-type' => 'application/json' ])
+            ->putJson('/api/v1/category/999', ['label' => 'New Label']);
+        $data = json_decode( $response->content(), true );
+        $response->assertStatus(404);
+        $this->checkResponseResource($data, ['message']);
     }
 
     public function test_category_api_delete()

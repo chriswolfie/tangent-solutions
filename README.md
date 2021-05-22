@@ -1,67 +1,38 @@
-## Environment
-- php7.4.3
-- sqlite3 for php7.4
-- https://laravel.com/docs/8.x/deployment#server-requirements
+## Tangent Solutions - PHP Assessment
+Chris Kempen<br />
+chris@phpalchemist.com
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<br />
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introduction
+Greetings assessors! Thank you so much for reviewing my PHP assessment.<br />
+Herewith a few features and details about this submission:
 
-## About Laravel
+- this assessment was created with <b>PHP7.4</b>, and <b>Laravel8</b>
+- please make sure your PHP7 environment meets the minimum Laravel requirements, found [here](https://laravel.com/docs/8.x/deployment#server-requirements).
+- you'll also need <b>composer</b> installed and available
+- please also make sure you have <b>sqlite3 installed</b> (outside of composer)
+- I've included the `.env` file with the repo, which is unusual but will make the initial setup a lot easier
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Installation & Commands
+1. PHP dependency installation: `composer install`
+2. Database creation (sqlite by default): `php artisan migrate:fresh`
+3. Database creation with seeding: `php artisan migrate:fresh --seed`
+4. Running the unit tests: `php artisan test`
+4. Server start-up: `php artisan serve`
+3. Swagger docs URL: `http://127.0.0.1:8000/api/documentation`
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## System Features
+I've created this list to showcase some of the areas of the API assessment I focused on (and their associated features), to help with talking points:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- There are no hard dependencies to the underlying data store implementation, as I used a <b>repository design pattern</b> here between the data layer and the control layer.
+- The current repository implementation is using Eloquent for its data layer interactions, and has been tested with <b>both MySQL and sqlite</b>.
+- I even implemented my own (very simple) authentication system to comply with the repository design pattern and eliminate that dependency.
+- <b>Gateway design patterns</b> have been employed within the repository implementations, as well as in the API logger middleware.
+- The API logger has been built with 2 log writers: a <b>database writer</b> (again using the repository design pattern), and a simple <b>file writer</b>.
+- All of the above has been achieved using <b>contracts</b>, which are bound in a service provider called the `TangentServiceProvider`.
+- I've left the `User` and `Category` endpoints open, and without authentication, purely to assist in ease of testing.
+- <b>API keys</b> may be retrieved from the `/api/v1/sneaky` endpoint (which, as the name suggests, is a sneaky way to get an API key for a particular user), again purely to assist in testing. This endpoint would normally not exist.
+- Validation is being performed through custom <b>request classes</b>, and similarly resources are being delivered through custom <b>resource classes</b>.
+- There is some <b>cascading</b> that will be performed in the data structures on data manipulation, for example: when a post is deleted, any associated comments on the post will also be deleted automatically.
+- Unit tests are performed using a freshly-seeded database (on every test), which employs an <b>in-memory sqlite instance</b>.

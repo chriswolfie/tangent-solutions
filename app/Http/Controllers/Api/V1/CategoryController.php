@@ -223,6 +223,12 @@ class CategoryController extends Controller
      */
     public function update(CategoryPostRequest $request, $id, CategoriesContract $categories_contract)
     {
+        // checking for existence...
+        $category = $categories_contract->fetchSingleEntry($id);
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
         // values have already been validated, so let's now
         // run a custom validation check with the uniqueness rule...
         $rules = $request->rules();

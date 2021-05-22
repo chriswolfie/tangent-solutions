@@ -35,4 +35,5 @@ I've created this list to showcase some of the areas of the API assessment I foc
 - <b>API keys</b> may be retrieved from the `/api/v1/sneaky` endpoint (which, as the name suggests, is a sneaky way to get an API key for a particular user), again purely to assist in testing. This endpoint would normally not exist.
 - Validation is being performed through custom <b>request classes</b>, and similarly resources are being delivered through custom <b>resource classes</b>.
 - There is some <b>cascading</b> that will be performed in the data structures on data manipulation, for example: when a post is deleted, any associated comments on the post will also be deleted automatically.
+- <b>Uniqueness</b> is also being maintained within the data store, specifically around post titles, user email addresses and category labels.
 - Unit tests are performed using a freshly-seeded database (on every test), which employs an <b>in-memory sqlite instance</b>.

@@ -98,6 +98,14 @@ class PostsApiTest extends TestCase
         $response->assertStatus(200);
         $this->checkResponseResource($data, ['post_id', 'post_title', 'post_content', 'user_id', 'category_id']);
 
+        // non-existing entry...
+        $response = $this
+            ->withHeaders([ 'accept' => 'application/json', 'content-type' => 'application/json' ])
+            ->get('/api/v1/post/999');
+        $data = json_decode( $response->content(), true );
+        $response->assertStatus(404);
+        $this->checkResponseResource($data, ['message']);
+
         // create and fetch...
         // already tested this endpoint above...
         $response = $this

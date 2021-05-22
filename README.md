@@ -17,7 +17,7 @@ Herewith a few features and details about this submission:
 ## Installation & Commands
 1. PHP dependency installation: `composer install`
 2. Database creation (sqlite by default): `php artisan migrate:fresh`
-3. Database creation with seeding: `php artisan migrate:fresh --seed`
+3. Database creation with seeding ___(to help with testing)___: `php artisan migrate:fresh --seed`
 4. Running the unit tests: `php artisan test`
 4. Server start-up: `php artisan serve`
 3. Swagger docs URL: `http://127.0.0.1:8000/api/documentation`

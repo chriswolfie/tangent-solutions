@@ -38,27 +38,18 @@ class UserController extends Controller
      *          response=200,
      *          description="Success",
      *          @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  example={
-     *                      { "user_id": 1, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
-     *                      { "user_id": 2, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
-     *                  },
-     *                  @OA\Items(
-     *                      @OA\Property(property="user_id", type="integer", example="7"),
-     *                      @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *                      @OA\Property(property="email_address", type="string", example="email@domain.com"),
-     *                  ),
+     *              example={
+     *                  { "user_id": 1, "full_name": "Firstname Lastname", "email": "email@domain.com" },
+     *                  { "user_id": 2, "full_name": "Firstname Lastname", "email": "email@domain.com" },
+     *              },
+     *              @OA\Items(
+     *                  @OA\Property(property="user_id", type="integer", example="7"),
+     *                  @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
+     *                  @OA\Property(property="email", type="string", example="email@domain.com"),
      *              ),
      *          ),
      *      )
      *  )
-     */
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(UsersContract $users_contract)
     {
@@ -69,25 +60,22 @@ class UserController extends Controller
      *  @OA\Get(
      *      path="/api/v1/sneaky",
      *      summary="Retrieve a (sneaky) list of users",
-     *      description="Retrieves a (sneaky) list of all of the users created on the system",
+     *      description="Retrieves a (sneaky) list of all of the users created on the system, with their API key values",
      *      operationId="user-sneaky",
      *      tags={"Sneaky"},
      *      @OA\Response(
      *          response=200,
      *          description="Success",
      *          @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  example={
-     *                      { "user_id": 1, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
-     *                      { "user_id": 2, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
-     *                  },
-     *                  @OA\Items(
-     *                      @OA\Property(property="user_id", type="integer", example="7"),
-     *                      @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *                      @OA\Property(property="email_address", type="string", example="email@domain.com"),
-     *                  ),
+     *              example={
+     *                  { "user_id": 1, "full_name": "Firstname Lastname", "email": "email@domain.com", "api_key": "ABC123" },
+     *                  { "user_id": 2, "full_name": "Firstname Lastname", "email": "email@domain.com", "api_key": "DEF456" },
+     *              },
+     *              @OA\Items(
+     *                  @OA\Property(property="user_id", type="integer", example="7"),
+     *                  @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
+     *                  @OA\Property(property="email", type="string", example="email@domain.com"),
+     *                  @OA\Property(property="api_key", type="string", example="ABC123"),
      *              ),
      *          ),
      *      )
@@ -132,23 +120,17 @@ class UserController extends Controller
      *                  property="errors",
      *                  type="array",
      *                  example={
-     *                      "full_name" : {"Invalid full name."},
-     *                      "email" : {"The email has already been taken."},
+     *                      "parameter" : {"Some error message."},
+     *                      "another_parameter" : {"Another error message."},
      *                  },
      *                  @OA\Items(
-     *                      @OA\Property(property="full_name", type="array", example={"Invalid full name."}, @OA\Items()),
-     *                      @OA\Property(property="email", type="array", example={"The email has already been taken."}, @OA\Items()),
+     *                      @OA\Property(property="parameter", type="array", example={"Another error message."}, @OA\Items()),
+     *                      @OA\Property(property="another_parameter", type="array", example={"Some error message."}, @OA\Items()),
      *                  ),
      *              ),
      *          )
      *      )
      *  )
-     */
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(UserPostRequest $request, UsersContract $users_contract)
     {
@@ -169,8 +151,8 @@ class UserController extends Controller
     /**
      *  @OA\Get(
      *      path="/api/v1/user/{user_id}",
-     *      summary="Retrieve a list of users",
-     *      description="Retrieves a list of all of the users created on the system",
+     *      summary="Retrieve a user",
+     *      description="Retrieves a specific user from the system",
      *      operationId="user-show",
      *      tags={"User"},
      *      @OA\Parameter(
@@ -193,12 +175,6 @@ class UserController extends Controller
      *          )
      *      )
      *  )
-     */
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id, UsersContract $users_contract)
     {
@@ -253,24 +229,17 @@ class UserController extends Controller
      *                  property="errors",
      *                  type="array",
      *                  example={
-     *                      "full_name" : {"Invalid full name."},
-     *                      "email" : {"The email has already been taken."},
+     *                      "parameter" : {"Some error message."},
+     *                      "another_parameter" : {"Another error message."},
      *                  },
      *                  @OA\Items(
-     *                      @OA\Property(property="full_name", type="array", example={"Invalid full name."}, @OA\Items()),
-     *                      @OA\Property(property="email", type="array", example={"The email has already been taken."}, @OA\Items()),
+     *                      @OA\Property(property="parameter", type="array", example={"Another error message."}, @OA\Items()),
+     *                      @OA\Property(property="another_parameter", type="array", example={"Some error message."}, @OA\Items()),
      *                  ),
      *              ),
      *          )
      *      )
      *  )
-     */
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(UserPutRequest $request, $id, UsersContract $users_contract)
     {
@@ -310,12 +279,6 @@ class UserController extends Controller
      *          description="No content",
      *      ),
      *  )
-     */
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id, UsersContract $users_contract)
     {

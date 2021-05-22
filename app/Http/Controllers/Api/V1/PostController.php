@@ -25,7 +25,7 @@ class PostController extends Controller
     /**
      *  @OA\Get(
      *      path="/api/v1/post",
-     *      summary="Retrieve a list of post",
+     *      summary="Retrieve a list of posts",
      *      description="Retrieves a list of all of the posts created on the system",
      *      operationId="post-index",
      *      tags={"Post"},
@@ -33,27 +33,20 @@ class PostController extends Controller
      *          response=200,
      *          description="Success",
      *          @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  example={
-     *                      { "user_id": 1, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
-     *                      { "user_id": 2, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
-     *                  },
-     *                  @OA\Items(
-     *                      @OA\Property(property="user_id", type="integer", example="7"),
-     *                      @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *                      @OA\Property(property="email_address", type="string", example="email@domain.com"),
-     *                  ),
+     *              example={
+     *                  { "post_id": 1, "post_title": "Title Of Post", "post_content": "Some post content.", "user_id": 1, "category_id": 1 },
+     *                  { "post_id": 2, "post_title": "Another Title", "post_content": "Some post content.", "user_id": 1, "category_id": 3 },
+     *              },
+     *              @OA\Items(
+     *                  @OA\Property(property="post_id", type="integer", example="1"),
+     *                  @OA\Property(property="post_title", type="string", example="Title Of Post"),
+     *                  @OA\Property(property="post_content", type="string", example="Some post content."),
+     *                  @OA\Property(property="user_id", type="integer", example="7"),
+     *                  @OA\Property(property="category_id", type="integer", example="2"),
      *              ),
      *          ),
      *      )
      *  )
-     */
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(PostsContract $posts_contract)
     {
@@ -82,9 +75,18 @@ class PostController extends Controller
      *          response=201,
      *          description="Post created successfully",
      *          @OA\JsonContent(
-     *              @OA\Property(property="user_id", type="integer", example="12"),
-     *              @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *              @OA\Property(property="email", type="string", example="email@address.com"),
+     *              @OA\Property(property="post_id", type="integer", example="1"),
+     *              @OA\Property(property="post_title", type="string", example="Title Of Post"),
+     *              @OA\Property(property="post_content", type="string", example="Some post content."),
+     *              @OA\Property(property="user_id", type="integer", example="7"),
+     *              @OA\Property(property="category_id", type="integer", example="2"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorised",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Unauthorised"),
      *          )
      *      ),
      *      @OA\Response(
@@ -96,23 +98,17 @@ class PostController extends Controller
      *                  property="errors",
      *                  type="array",
      *                  example={
-     *                      "full_name" : {"Invalid full name."},
-     *                      "email" : {"The email has already been taken."},
+     *                      "parameter" : {"Some error message."},
+     *                      "another_parameter" : {"Another error message."},
      *                  },
      *                  @OA\Items(
-     *                      @OA\Property(property="full_name", type="array", example={"Invalid full name."}, @OA\Items()),
-     *                      @OA\Property(property="email", type="array", example={"The email has already been taken."}, @OA\Items()),
+     *                      @OA\Property(property="parameter", type="array", example={"Another error message."}, @OA\Items()),
+     *                      @OA\Property(property="another_parameter", type="array", example={"Some error message."}, @OA\Items()),
      *                  ),
      *              ),
      *          )
      *      )
      *  )
-     */
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(PostPostRequest $request, PostsContract $posts_contract, UsersContract $users_contract, CategoriesContract $categories_contract)
     {
@@ -146,25 +142,21 @@ class PostController extends Controller
      *          response=200,
      *          description="Success",
      *          @OA\JsonContent(
-     *              @OA\Property(property="user_id", type="integer", example="12"),
-     *              @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *              @OA\Property(property="email", type="string", example="email@address.com"),
+     *              @OA\Property(property="post_id", type="integer", example="1"),
+     *              @OA\Property(property="post_title", type="string", example="Title Of Post"),
+     *              @OA\Property(property="post_content", type="string", example="Some post content."),
+     *              @OA\Property(property="user_id", type="integer", example="7"),
+     *              @OA\Property(property="category_id", type="integer", example="2"),
      *          ),
      *      ),
      *      @OA\Response(
      *          response=404,
-     *          description="User not found",
+     *          description="Post not found",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="User not found."),
+     *              @OA\Property(property="message", type="string", example="Post not found."),
      *          )
      *      )
      *  )
-     */
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id, PostsContract $posts_contract)
     {
@@ -193,24 +185,32 @@ class PostController extends Controller
      *              required={},
      *              @OA\Property(property="title", type="string", example="Some Title"),
      *              @OA\Property(property="content", type="string", example="This is an example of the content."),
-     *              @OA\Property(property="user_id", type="integer", example="3"),
      *              @OA\Property(property="category_id", type="integer", example="2"),
      *          ),
      *      ),
      *      @OA\Response(
-     *          response=201,
-     *          description="User updated successfully",
+     *          response=200,
+     *          description="Post updated successfully",
      *          @OA\JsonContent(
-     *              @OA\Property(property="user_id", type="integer", example="12"),
-     *              @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *              @OA\Property(property="email", type="string", example="email@address.com"),
+     *              @OA\Property(property="post_id", type="integer", example="1"),
+     *              @OA\Property(property="post_title", type="string", example="Title Of Post"),
+     *              @OA\Property(property="post_content", type="string", example="Some post content."),
+     *              @OA\Property(property="user_id", type="integer", example="7"),
+     *              @OA\Property(property="category_id", type="integer", example="2"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorised",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Unauthorised"),
      *          )
      *      ),
      *      @OA\Response(
      *          response=404,
-     *          description="User not found",
+     *          description="Post not found",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="User not found."),
+     *              @OA\Property(property="message", type="string", example="Post not found."),
      *          )
      *      ),
      *      @OA\Response(
@@ -222,24 +222,17 @@ class PostController extends Controller
      *                  property="errors",
      *                  type="array",
      *                  example={
-     *                      "full_name" : {"Invalid full name."},
-     *                      "email" : {"The email has already been taken."},
+     *                      "parameter" : {"Some error message."},
+     *                      "another_parameter" : {"Another error message."},
      *                  },
      *                  @OA\Items(
-     *                      @OA\Property(property="full_name", type="array", example={"Invalid full name."}, @OA\Items()),
-     *                      @OA\Property(property="email", type="array", example={"The email has already been taken."}, @OA\Items()),
+     *                      @OA\Property(property="parameter", type="array", example={"Another error message."}, @OA\Items()),
+     *                      @OA\Property(property="another_parameter", type="array", example={"Some error message."}, @OA\Items()),
      *                  ),
      *              ),
      *          )
      *      )
      *  )
-     */
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(PostPutRequest $request, $id, PostsContract $posts_contract, UsersContract $users_contract, CategoriesContract $categories_contract)
     {
@@ -281,13 +274,14 @@ class PostController extends Controller
      *          response=204,
      *          description="No content",
      *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorised",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Unauthorised"),
+     *          )
+     *      ),
      *  )
-     */
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id, PostsContract $posts_contract)
     {

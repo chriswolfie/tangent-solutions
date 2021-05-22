@@ -22,27 +22,17 @@ class CategoryController extends Controller
      *          response=200,
      *          description="Success",
      *          @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  example={
-     *                      { "user_id": 1, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
-     *                      { "user_id": 2, "full_name": "Firstname Lastname", "email_address": "email@domain.com" },
-     *                  },
-     *                  @OA\Items(
-     *                      @OA\Property(property="user_id", type="integer", example="7"),
-     *                      @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *                      @OA\Property(property="email_address", type="string", example="email@domain.com"),
-     *                  ),
+     *              example={
+     *                  { "category_id": 1, "label": "First Category" },
+     *                  { "category_id": 2, "label": "Second Category" },
+     *              },
+     *              @OA\Items(
+     *                  @OA\Property(property="category_id", type="integer", example="7"),
+     *                  @OA\Property(property="label", type="string", example="First Category"),
      *              ),
      *          ),
      *      )
      *  )
-     */
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(CategoriesContract $categories_contract)
     {
@@ -66,11 +56,10 @@ class CategoryController extends Controller
      *      ),
      *      @OA\Response(
      *          response=201,
-     *          description="Post created successfully",
+     *          description="Category created successfully",
      *          @OA\JsonContent(
-     *              @OA\Property(property="user_id", type="integer", example="12"),
-     *              @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *              @OA\Property(property="email", type="string", example="email@address.com"),
+     *              @OA\Property(property="category_id", type="integer", example="7"),
+     *              @OA\Property(property="label", type="string", example="First Category"),
      *          )
      *      ),
      *      @OA\Response(
@@ -82,23 +71,17 @@ class CategoryController extends Controller
      *                  property="errors",
      *                  type="array",
      *                  example={
-     *                      "full_name" : {"Invalid full name."},
-     *                      "email" : {"The email has already been taken."},
+     *                      "parameter" : {"Some error message."},
+     *                      "another_parameter" : {"Another error message."},
      *                  },
      *                  @OA\Items(
-     *                      @OA\Property(property="full_name", type="array", example={"Invalid full name."}, @OA\Items()),
-     *                      @OA\Property(property="email", type="array", example={"The email has already been taken."}, @OA\Items()),
+     *                      @OA\Property(property="parameter", type="array", example={"Another error message."}, @OA\Items()),
+     *                      @OA\Property(property="another_parameter", type="array", example={"Some error message."}, @OA\Items()),
      *                  ),
      *              ),
      *          )
      *      )
      *  )
-     */
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(CategoryPostRequest $request, CategoriesContract $categories_contract)
     {
@@ -130,25 +113,18 @@ class CategoryController extends Controller
      *          response=200,
      *          description="Success",
      *          @OA\JsonContent(
-     *              @OA\Property(property="user_id", type="integer", example="12"),
-     *              @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *              @OA\Property(property="email", type="string", example="email@address.com"),
+     *              @OA\Property(property="category_id", type="integer", example="7"),
+     *              @OA\Property(property="label", type="string", example="First Category"),
      *          ),
      *      ),
      *      @OA\Response(
      *          response=404,
-     *          description="User not found",
+     *          description="Category not found",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="User not found."),
+     *              @OA\Property(property="message", type="string", example="Category not found."),
      *          )
      *      )
      *  )
-     */
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id, CategoriesContract $categories_contract)
     {
@@ -178,19 +154,18 @@ class CategoryController extends Controller
      *          ),
      *      ),
      *      @OA\Response(
-     *          response=201,
-     *          description="User updated successfully",
+     *          response=200,
+     *          description="Category updated successfully",
      *          @OA\JsonContent(
-     *              @OA\Property(property="user_id", type="integer", example="12"),
-     *              @OA\Property(property="full_name", type="string", example="Firstname Lastname"),
-     *              @OA\Property(property="email", type="string", example="email@address.com"),
+     *              @OA\Property(property="category_id", type="integer", example="7"),
+     *              @OA\Property(property="label", type="string", example="First Category"),
      *          )
      *      ),
      *      @OA\Response(
      *          response=404,
-     *          description="User not found",
+     *          description="Category not found",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="User not found."),
+     *              @OA\Property(property="message", type="string", example="Category not found."),
      *          )
      *      ),
      *      @OA\Response(
@@ -202,24 +177,17 @@ class CategoryController extends Controller
      *                  property="errors",
      *                  type="array",
      *                  example={
-     *                      "full_name" : {"Invalid full name."},
-     *                      "email" : {"The email has already been taken."},
+     *                      "parameter" : {"Some error message."},
+     *                      "another_parameter" : {"Another error message."},
      *                  },
      *                  @OA\Items(
-     *                      @OA\Property(property="full_name", type="array", example={"Invalid full name."}, @OA\Items()),
-     *                      @OA\Property(property="email", type="array", example={"The email has already been taken."}, @OA\Items()),
+     *                      @OA\Property(property="parameter", type="array", example={"Another error message."}, @OA\Items()),
+     *                      @OA\Property(property="another_parameter", type="array", example={"Some error message."}, @OA\Items()),
      *                  ),
      *              ),
      *          )
      *      )
      *  )
-     */
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(CategoryPostRequest $request, $id, CategoriesContract $categories_contract)
     {

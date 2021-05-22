@@ -25,7 +25,6 @@ class CommentPostRequest extends FormRequest
     {
         return [
             'content' => ['required', 'string', 'min:10'],
-            'user_id' => ['required', 'integer']
         ];
     }
 }

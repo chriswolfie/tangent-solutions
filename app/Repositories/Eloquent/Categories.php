@@ -14,13 +14,13 @@ class Categories extends Base implements CategoriesContract
 
     // we need a custom check here to make sure we're not removing
     // categories that posts are currently using...
-    public function removeEntry(int $entry_id) : void
+    public function removeCategory(int $entry_id) : void
     {
         $category = $this->model->find($entry_id);
         if ($category) {
             $posts_count = $category->posts()->count();
             if ($posts_count == 0) {
-                $category->delete();
+                parent::removeEntry($entry_id);
             }
         }
     }

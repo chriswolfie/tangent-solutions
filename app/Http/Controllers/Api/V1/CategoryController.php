@@ -262,7 +262,7 @@ class CategoryController extends Controller
      */
     public function destroy($id, CategoriesContract $categories_contract)
     {
-        $categories_contract->removeEntry($id);
+        $categories_contract->removeCategory($id);
         return response()->noContent();
     }
 }
